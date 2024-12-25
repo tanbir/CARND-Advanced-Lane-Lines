@@ -37,17 +37,9 @@ The goals / steps of this project are the following:
 [final]: ./output_images/Final.png "Detected lane"
 
 
-### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
-
-### Writeup / README
-
-#### 1. Provide a Writeup / README that includes all the rubric points and how you addressed each one.  You can submit your writeup as markdown or pdf.  [Here](https://github.com/udacity/CarND-Advanced-Lane-Lines/blob/master/writeup_template.md) is a template writeup for this project you can use as a guide and a starting point.  
-
-You're reading it!
-
 ### Camera Calibration
 
-#### 1. Briefly state how you computed the camera matrix and distortion coefficients. Provide an example of a distortion corrected calibration image.
+#### 1. Computation of the camera matrix and distortion coefficients
 
 * Camera calibration is defined in the `Calibarator` class in the `pipeline.ipynb`
 * I start by preparing "object points", which will be the (x, y, z) coordinates of the chessboard corners in the world. Here I am assuming the 9x6 chessboard is fixed on the (x, y) plane at z=0, such that the object points are the same for each calibration image.
@@ -62,12 +54,12 @@ You're reading it!
 
 ### Pipeline (single images)
 
-#### 1. Provide an example of a distortion-corrected image.
+#### 1. Example of a distortion-corrected image.
 
 To demonstrate this step, I will describe how I apply the distortion correction to one of the test images like this one:
 ![alt text][test_image]
 
-#### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
+#### 2. Use of color transforms, gradients or other methods to create a thresholded binary image. 
 
 I used a combination of color and gradient thresholds to generate a binary image (thresholding steps are defined in the `Thresholds` class).  Here's an example of my output for this step.  (note: this is not actually from one of the test images)
 
@@ -98,7 +90,7 @@ I used a combination of color and gradient thresholds to generate a binary image
 * Since Sobel absolute (very similar to LUV L) gives clearer lane lines on the dark surface, I use this with threshold (10, 100)
 * Since LAB B detects the white lines clearer, I use LAB B with threshold (155-200) 
 
-#### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
+#### 3. Performing perspective transform.
 
 The code for my perspective transform includes a function called `perspective_transformed(img)`, which appears in lines `pipeline` class.  Using source (`src`) and destination (`dst`) points it computes the transformation and inverse transformation matrices.  
 
@@ -115,7 +107,7 @@ I verified that my perspective transform was working as expected by drawing the 
 ![binary and warped][binary_and_warped]
 
 
-#### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
+#### 4. Identifying lane-line pixels and fit their positions with a polynomia
 
 Then I did some other stuff and fit my lane lines with a 2nd order polynomial kinda like this:
 
@@ -123,11 +115,11 @@ Then I did some other stuff and fit my lane lines with a 2nd order polynomial ki
 
 ![polyfit1][polyfit2]
 
-#### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
+#### 5. Calculating the radius of curvature of the lane and the position of the vehicle with respect to center.
 
 I did this in the `radius_of_curvature_and_center_distance(...)` function in the `pipeline` class
 
-#### 6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
+#### 6. An example image of the result plotted back down onto the road such that the lane area is identified clearly.
 
 I implemented this step in `draw_lane(...)` function in the `pipeline` class.  Here is an example of my result on a test image:
 
@@ -136,17 +128,9 @@ I implemented this step in `draw_lane(...)` function in the `pipeline` class.  H
 ---
 ### Pipeline (video)
 
-#### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (wobbly lines are ok but no catastrophic failures that would cause the car to drive off the road!).
+#### 1. A link to your final video output.  
 
 Here's a [link to my video result](./project_video_ouput.mp4)
 
 ---
 
-### Discussion
-
-#### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
-
-Key problem areas:
-* Lighting, shadows, discolorations which were easily handled for the project video by adjusting the thresholds
-* In the challenge video, the lane lines notnecessarily occupy the same pixel values compared to the first video, so the same pipeline did not work
-    * Dynamically changing the threshold parameters would possibly help to make it work on the challenge video
